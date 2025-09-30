@@ -1,17 +1,29 @@
 import { useState } from "react";
 import styled from "styled-components";
 import ChatBox from "./components/ChatBox";
+import { useNavigate } from "react-router-dom";
+
 
 export default function App() {
   const [open, setOpen] = useState(false);
-  const [conversa, setConversa] = useState([]); // ⬅️ estado aqui
+  const [conversa, setConversa] = useState([]); 
+  const navigate = useNavigate();
+  
+  const abrirExportacaoPDF = () => {
+    navigate("/login");
+  };
+
+
+
 
   const handleClick = () => setOpen(!open);
 
   return (
     <div>
       <Janela open={open}>
+       
         <ChabecaChat>
+          <img onClick={abrirExportacaoPDF} src="/enviarpdf.png" alt="enviapdf" />
           CHATBOT CATÓLICA
           <BotaoFechar onClick={handleClick}>✖</BotaoFechar>
         </ChabecaChat>
@@ -25,7 +37,7 @@ export default function App() {
   );
 }
 
-/* estilos */
+
 const BotaoDoChat = styled.button`
   position: fixed;
   bottom: 20px;
@@ -75,6 +87,15 @@ const ChabecaChat = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  img{ 
+     width: 7%;
+    height: 100%;
+    cursor: pointer;
+    
+    
+  }
+    
 `;
 
 const BotaoFechar = styled.button`

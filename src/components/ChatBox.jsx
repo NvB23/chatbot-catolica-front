@@ -3,6 +3,7 @@ import styled from "styled-components";
 import microfone from "../assets/microfone.png";
 import enviar from "../assets/enviar.png";
 
+
 export default function ChatBox({ conversa, setConversa }) {
   const [mensagem, setMensagem] = useState("");
 
@@ -25,39 +26,40 @@ export default function ChatBox({ conversa, setConversa }) {
   };
 
   return (
-    <ChatParteDeFora>
-      <Mensagens>
-        {conversa.map((msg, index) => (
-          <Mensagem key={index} tipo={msg.autor === "Você" ? "usuario" : "bot"}>
-            {msg.texto}
-          </Mensagem>
-        ))}
-      </Mensagens>
+      <ChatParteDeFora>
+        <Mensagens>
+          {conversa.map((msg, index) => (
+            <Mensagem key={index} tipo={msg.autor === "Você" ? "usuario" : "bot"}>
+              {msg.texto}
+            </Mensagem>
+          ))}
+        </Mensagens>
 
-      <CaixadeTexto>
-        <IconesFigma>
-          <img src={microfone} alt="Microfone" />
-        </IconesFigma>
+        <CaixadeTexto>
+      
+          <IconesFigma>
+            <img src={microfone} alt="Microfone" />
+          </IconesFigma>
 
-        <Input
-          type="text"
-          value={mensagem}
-          onChange={(e) => setMensagem(e.target.value)}
-          placeholder="Pergunte algo..."
-        />
+          <Input
+            type="text"
+            value={mensagem}
+            onChange={(e) => setMensagem(e.target.value)}
+            placeholder="Pergunte algo..."
+          />
 
-        <IconesFigma onClick={enviarMensagem}>
-          <img src={enviar} alt="Enviar" />
-        </IconesFigma>
-      </CaixadeTexto>
-    </ChatParteDeFora>
-  );
+          <IconesFigma onClick={enviarMensagem}>
+            <img src={enviar} alt="Enviar" />
+          </IconesFigma>
+        </CaixadeTexto>
+      </ChatParteDeFora>
+    );
 }
 
 const ChatParteDeFora = styled.div`
   width: 350px;
   height: 500px;
-  background: #f0f0f0;
+  background: #F1F1F1;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -71,7 +73,10 @@ const Mensagens = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
+  word-wrap: break-word;
+
+
 `;
 
 const Mensagem = styled.div`
@@ -79,7 +84,10 @@ const Mensagem = styled.div`
   color: ${(props) => (props.tipo === "usuario" ? "white" : "#002366")};
   align-self: ${(props) => (props.tipo === "usuario" ? "flex-end" : "flex-start")};
   padding: 8px 12px;
-  border-radius: 12px;
+  border-bottom-left-radius: ${(props) => (props.tipo === "usuario" ? "12px" : "0px")};
+  border-bottom-right-radius: ${(props) => (props.tipo === "bot" ? "12px" : "0px")};
+  border-top-right-radius: 12px;
+  border-top-left-radius: 12px;
   max-width: 80%;
 `;
 
@@ -88,12 +96,12 @@ const CaixadeTexto = styled.div`
   align-items: center;
   padding: 10px;
   gap: 10px;
-  background: #fff;
+  background: transparent;
   border-top: 1px solid #ccc;
 `;
 
 const IconesFigma = styled.button`
-  background: #002366;
+  background: #030B65;
   border: none;
   border-radius: 50%;
   padding: 10px;
@@ -101,10 +109,11 @@ const IconesFigma = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  
 
   img {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
   }
 `;
 
