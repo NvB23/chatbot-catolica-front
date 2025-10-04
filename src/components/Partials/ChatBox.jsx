@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import microfone from "../assets/microfone.png";
-import enviar from "../assets/enviar.png";
+import microfone from "../../../public/assets/images/microfone.png";
+import enviar from "../../../public/assets/images/enviar.png";
 
 
-export default function ChatBox({ conversa, setConversa }) {
+export default function ChatBox() {
   const [mensagem, setMensagem] = useState("");
+  const [conversa, setConversa] = useState([]); 
 
   useEffect(() => {
     if (conversa.length === 0) {
@@ -21,15 +22,24 @@ export default function ChatBox({ conversa, setConversa }) {
   const enviarMensagem = () => {
     if (mensagem.trim() === "") return;
 
-    setConversa([...conversa, { autor: "Você", texto: mensagem }]);
-    setMensagem("");
+      setConversa([...conversa, { autor: "Usuario", texto: mensagem }]);
+      setMensagem("");
+  };
+
+  const enviarMensagemComEnter = (event) => {
+    if (mensagem.trim() === "") return;
+
+    if (event.key == "Enter") {
+      setConversa([...conversa, { autor: "Usuario", texto: mensagem }]);
+      setMensagem("");
+    }
   };
 
   return (
       <ChatParteDeFora>
         <Mensagens>
           {conversa.map((msg, index) => (
-            <Mensagem key={index} tipo={msg.autor === "Você" ? "usuario" : "bot"}>
+            <Mensagem key={index} tipo={msg.autor === "Usuario" ? "usuario" : "bot"}>
               {msg.texto}
             </Mensagem>
           ))}
@@ -42,6 +52,7 @@ export default function ChatBox({ conversa, setConversa }) {
           </IconesFigma>
 
           <Input
+            onKeyDown={enviarMensagemComEnter}
             type="text"
             value={mensagem}
             onChange={(e) => setMensagem(e.target.value)}

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import styled from "styled-components";
-import ChatBox from "./components/ChatBox";
+import ChatBox from "../Partials/ChatBox";
 import { useNavigate } from "react-router-dom";
-
+import chat from "../../../public/assets/images/chat.png"
+import enviarPDF from "../../../public/assets/images/enviarpdf.png"
 
 export default function App() {
   const [open, setOpen] = useState(false);
-  const [conversa, setConversa] = useState([]); 
   const navigate = useNavigate();
   
   const abrirExportacaoPDF = () => {
@@ -23,15 +23,15 @@ export default function App() {
       <Janela open={open}>
        
         <ChabecaChat>
-          <img onClick={abrirExportacaoPDF} src="/enviarpdf.png" alt="enviapdf" />
+          <img onClick={abrirExportacaoPDF} src={enviarPDF} alt="enviarPDF" />
           CHATBOT CATÓLICA
           <BotaoFechar onClick={handleClick}>✖</BotaoFechar>
         </ChabecaChat>
-        <ChatBox conversa={conversa} setConversa={setConversa} />
+        <ChatBox/>
       </Janela>
 
       <BotaoDoChat onClick={handleClick}>
-        <img src="/chat.png" alt="Chat" />
+        <img src={chat} alt="chat" />
       </BotaoDoChat>
     </div>
   );
