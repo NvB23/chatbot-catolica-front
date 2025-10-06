@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import microfone from "../assets/microfone.png";
-import enviar from "../assets/enviar.png";
+import microfone from "../../../public/assets/images/microfone.png";
+import enviar from "../../../public/assets/images/enviar.png";
 
 
 export default function ChatBox() {
@@ -22,10 +22,10 @@ export default function ChatBox() {
   const enviarMensagem = () => {
     if (mensagem.trim() === "") return;
 
-    setConversa([...conversa, { autor: "Usuario", texto: mensagem }]);
-    setMensagem("");
+      setConversa([...conversa, { autor: "Usuario", texto: mensagem }]);
+      setMensagem("");
   };
-  
+
   const enviarMensagemComEnter = (event) => {
     if (mensagem.trim() === "") return;
 
