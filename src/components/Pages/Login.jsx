@@ -1,6 +1,7 @@
 import iconeChat from "../../../public/assets/images/iconeChat.png";
 import fafic from "../../../public/assets/images/fafic.png";
 import styled, { createGlobalStyle } from "styled-components";
+import olho from "../../../public/assets/images/Eye.png";
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
@@ -32,10 +33,14 @@ export default function Login() {
           <Titulod>
             ENTRAR
             <TextoCrieConta>Não tem conta?<Link>Crie agora</Link></TextoCrieConta>
-            <Campo>
+            <Email>
               <label>Email: </label>
-              <input type="text" />
-
+              <input type="email" />
+            </Email>
+            <Campo>
+              <label>Senha: </label>
+              <input type="password"  />
+              <img src={olho} alt="" />
             </Campo>
           </Titulod>
           </Centralizar>
@@ -119,12 +124,35 @@ const TextoCrieConta = styled.p`
   font-size: 16px;
 
 `;
+const Email = styled.div`
+width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 20px;
+
+    input{ 
+    width: 100%;
+    height: 35px;
+    border-radius: 10px;
+    border-color: transparent;
+    background-color: #ffff;
+    outline: none;
+    padding: 20px 10px;
+    font-size: 20px;
+
+  }
+`
 const Campo = styled.div`
   width: 100%;
 
   display: flex;
   flex-direction: column;
   gap: 5px;
+  margin-top: 20px;
+  position: relative;
+  
 
 label{ 
   text-align: start;
@@ -139,7 +167,16 @@ input{
   border-color: transparent;
   background-color: #ffff;
   outline: none;
-
+  padding: 10px 45px 10px 10px;
+  font-size: 20px;
+  
+}
+img{
+  width: 5%;
+  position: absolute;
+  right: -50px;
+  top: 50%;
+  cursor: pointer;
 }
 `
 const Titulod = styled.h2`
