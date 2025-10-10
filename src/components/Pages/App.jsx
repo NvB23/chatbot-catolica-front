@@ -1,20 +1,14 @@
 import { useState } from "react";
 import styled from "styled-components";
 import ChatBox from "../Partials/ChatBox";
-import { useNavigate } from "react-router-dom";
-import chat from "../../../public/assets/images/chat.png"
-import enviarPDF from "../../../public/assets/images/enviarpdf.png"
+import { Link } from "react-router-dom";
+import IconeAberturaChat from "../../../public/assets/images/chat.png";
+import IconeChat from "../../../public/assets/images/icon-chat.png";
+import IconeEnvioPDF from "../../../public/assets/images/icone_de_envio_de_PDF.png";
+
 
 export default function App() {
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
-  
-  const abrirExportacaoPDF = () => {
-    navigate("/login");
-  };
-
-
-
 
   const handleClick = () => setOpen(!open);
 
@@ -23,15 +17,17 @@ export default function App() {
       <Janela open={open}>
        
         <ChabecaChat>
-          <img onClick={abrirExportacaoPDF} src={enviarPDF} alt="enviarPDF" />
-          CHATBOT CATÓLICA
-          <BotaoFechar onClick={handleClick}>✖</BotaoFechar>
+          <img src={IconeChat} alt="enviapdf" />
+          ChatBot de Suporte
+          <Link to="/login">
+            <img src={IconeEnvioPDF} />
+          </Link>
         </ChabecaChat>
-        <ChatBox/>
+        <ChatBox />
       </Janela>
 
       <BotaoDoChat onClick={handleClick}>
-        <img src={chat} alt="chat" />
+        <img src={IconeAberturaChat} alt="Chat" />
       </BotaoDoChat>
     </div>
   );
@@ -47,7 +43,7 @@ const BotaoDoChat = styled.button`
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  background: transparent;
+  background: #F1F1F1;
   padding: 0;
   z-index: 1000;
 
@@ -70,7 +66,7 @@ const Janela = styled.div`
   right: 20px;
   width: 350px;
   height: 500px;
-  background: #fff;
+  background: #A8C6F2;
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   z-index: 999;
@@ -80,28 +76,17 @@ const Janela = styled.div`
 `;
 
 const ChabecaChat = styled.div`
-  background: #002147;
-  color: white;
-  padding: 10px;
+  background: white;
+  color: black;
+  font-family: 'IBM Plex Mono', monospace;
+  padding: 15px;
   font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   img{ 
-     width: 7%;
-    height: 100%;
-    cursor: pointer;
-    
-    
+    width: 45px;
+    height: 45px; 
   }
-    
-`;
-
-const BotaoFechar = styled.button`
-  background: transparent;
-  border: none;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
 `;

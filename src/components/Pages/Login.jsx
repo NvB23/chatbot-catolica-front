@@ -2,6 +2,8 @@ import iconeChat from "../../../public/assets/images/iconeChat.png";
 import fafic from "../../../public/assets/images/fafic.png";
 import styled, { createGlobalStyle } from "styled-components";
 import olho from "../../../public/assets/images/Eye.png";
+import semOlho from "../../../public/assets/images/OcultEye.png";
+import { useState } from "react";
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
@@ -13,6 +15,12 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 export default function Login() {
+  const [exibiSenha, setExibiSenha] = useState(false);
+
+  const mudaVisibilidadeDeSenha = () => {
+    setExibiSenha(!exibiSenha);
+  }
+
   return (
     <>
       <GlobalStyle/>
@@ -32,17 +40,17 @@ export default function Login() {
         <Centralizar> 
           <Titulod>
             ENTRAR
-            <TextoCrieConta>Não tem conta?<Link>Crie agora</Link></TextoCrieConta>
+            </Titulod>
             <Email>
               <label>Email: </label>
-              <input type="email" />
+              <input placeholder="Digite seu email" type="email" />
             </Email>
             <Campo>
               <label>Senha: </label>
-              <input type="password"  />
-              <img src={olho} alt="" />
+              <input placeholder="Digite sua senha" type={exibiSenha ? "text" : "password"}  />
+              <img onClick={mudaVisibilidadeDeSenha} src={exibiSenha ? semOlho : olho} alt="" />
             </Campo>
-          </Titulod>
+            <TextoEsqueceuSuaSenha>Esqueceu sua senha? <br />Contate o Adiministrador por <a href="mailto:admin123@email.com?subject=Olá%20Administrado,%20esqueci%20minha%20senha&body=Descreva%20melhor%20o%20seu%20problema:">aqui</a>.</TextoEsqueceuSuaSenha>
           </Centralizar>
       </LadoDireito>
     </Container>
@@ -73,9 +81,7 @@ const Ladoesquerdo = styled.div`
 
 const ChatImg = styled.img`
   width: 200px;
-  max-width: 100%;
-  height: auto;
-  max-height: 20%; 
+  max-width: 100%; 
 `;
 
 const Logo = styled.img`
@@ -117,13 +123,7 @@ const Centralizar = styled.div`
   
   
 `;
-const Link = styled.span`
-  text-align: start;
-`;
-const TextoCrieConta = styled.p`
-  font-size: 16px;
 
-`;
 const Email = styled.div`
 width: 100%;
 
@@ -133,16 +133,21 @@ width: 100%;
   margin-top: 20px;
 
     input{ 
-    width: 100%;
+    width: 108%;
     height: 35px;
     border-radius: 10px;
     border-color: transparent;
     background-color: #ffff;
     outline: none;
-    padding: 20px 10px;
+    padding: 10px;
     font-size: 20px;
+    }
 
-  }
+    label{ 
+      text-align: start;
+      font-size: 18px;
+      color: rgba(255,255,255,0.5);
+    }
 `
 const Campo = styled.div`
   width: 100%;
@@ -184,3 +189,19 @@ color: #ffff;
 
 font-size: 42px;
 `;
+
+const TextoEsqueceuSuaSenha = styled.span`
+  color: white;
+  margin-top: 10px;
+  font-size: 18px;
+  width: 112%;
+  text-align: end;
+
+  a {
+    color: white;
+  }
+
+  a:hover {
+    color: gray;
+  }
+`
