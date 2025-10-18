@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import microfone from "../../../public/assets/images/microfone.png";
 import enviar from "../../../public/assets/images/enviar.png";
+import { enviarMensagemParaBackend } from "../../../services/MensagemService";
 
 
 export default function ChatBox() {
@@ -19,10 +20,17 @@ export default function ChatBox() {
     }
   }, [conversa, setConversa]);
 
-  const enviarMensagem = () => {
+  const  enviarMensagem = async () => {
     if (mensagem.trim() === "") return;
 
       setConversa([...conversa, { autor: "Usuario", texto: mensagem }]);
+      const respostaChatBot = await enviarMensagemParaBackend(mensagem)
+      setConversa([
+        {
+          autor: "Bot",
+          texto: respostaChatBot,
+        },
+      ]);
       setMensagem("");
   };
 
@@ -134,5 +142,5 @@ const Input = styled.input`
   border-radius: 20px;
   font-size: 14px;
   outline: none;
-  background: transparent;
+  background-color: #8080802d;
 `;

@@ -66,7 +66,7 @@ const Janela = styled.div`
   right: 20px;
   width: 350px;
   height: 500px;
-  background: #A8C6F2;
+  background: linear-gradient(to top, #5285D2, #A8C6F2);
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   z-index: 999;

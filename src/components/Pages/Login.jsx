@@ -3,7 +3,11 @@ import fafic from "../../../public/assets/images/fafic.png";
 import styled, { createGlobalStyle } from "styled-components";
 import olho from "../../../public/assets/images/Eye.png";
 import semOlho from "../../../public/assets/images/OcultEye.png";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useUsuarioStore } from "../../../services/useUsuarioStore";
+import { Navigate } from "react-router-dom";
+import logoAnimada from "../../../public/Logo-Animada.gif";
+import BalaoErro from "../Partials/BalaoErro";
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {
@@ -16,6 +20,34 @@ const GlobalStyle = createGlobalStyle`
 
 export default function Login() {
   const [exibiSenha, setExibiSenha] = useState(false);
+  const [desativaBotao, setDesativaBotao] = useState(true);
+
+  const login = useUsuarioStore((s) => s.login)
+
+  const { carregando, erro } = useUsuarioStore();
+
+  const emailRef = useRef();
+  const senhaRef = useRef();
+
+  function verificaCampos() {
+    const email = emailRef.current.value;
+    const senha = senhaRef.current.value;
+
+    if (email.trim() === '' || senha.trim() === '') {
+      setDesativaBotao(true);
+    } else {
+      setDesativaBotao(false);
+    }
+  }
+
+  async function fazerLogin(event) {
+    event.preventDefault();
+    const email = emailRef.current.value;
+    const senha = senhaRef.current.value;
+
+    login(email, senha);
+    <Navigate to="/adm-textos" replace />
+  }
 
   const mudaVisibilidadeDeSenha = () => {
     setExibiSenha(!exibiSenha);
@@ -24,6 +56,7 @@ export default function Login() {
   return (
     <>
       <GlobalStyle/>
+      { erro !== null ? (<BalaoErro />) : (null)}
       <Container>
       <Ladoesquerdo>
         <ChatImg src={iconeChat} alt="Chat" />
@@ -43,14 +76,37 @@ export default function Login() {
             </Titulod>
             <Email>
               <label>Email: </label>
-              <input placeholder="Digite seu email" type="email" />
+              <input 
+                ref={emailRef} 
+                placeholder="Digite seu email" 
+                type="email" />
             </Email>
+
             <Campo>
               <label>Senha: </label>
-              <input placeholder="Digite sua senha" type={exibiSenha ? "text" : "password"}  />
-              <img onClick={mudaVisibilidadeDeSenha} src={exibiSenha ? semOlho : olho} alt="" />
+              <input 
+                ref={senhaRef} 
+                placeholder="Digite sua senha" 
+                type={exibiSenha ? "text" : "password"}
+                onChange={() => verificaCampos()} />
+
+              <img 
+                onClick={mudaVisibilidadeDeSenha} 
+                src={exibiSenha ? semOlho : olho} 
+                alt="Ativa/Desativa Visibilidade de senha"
+                onChange={() => verificaCampos()} />
             </Campo>
-            <TextoEsqueceuSuaSenha>Esqueceu sua senha? <br />Contate o Adiministrador por <a href="mailto:admin123@email.com?subject=Olá%20Administrado,%20esqueci%20minha%20senha&body=Descreva%20melhor%20o%20seu%20problema:">aqui</a>.</TextoEsqueceuSuaSenha>
+
+            <TextoEsqueceuSuaSenha>Esqueceu sua senha? <br />Contate o Administrador por <a href="mailto:admin123@email.com?subject=Olá%20Administrado,%20esqueci%20minha%20senha&body=Descreva%20melhor%20o%20seu%20problema:">aqui</a>.</TextoEsqueceuSuaSenha>
+            
+            <Botao 
+              carregando={carregando} 
+              desativaBotao={desativaBotao} 
+              onClick={fazerLogin} 
+              disabled={carregando || desativaBotao} >
+                {carregando  ? (<LogoAnimada src={logoAnimada} alt="Logo Animada" />) : 'Entrar'}
+            </Botao>
+ 
           </Centralizar>
       </LadoDireito>
     </Container>
@@ -191,17 +247,42 @@ font-size: 42px;
 `;
 
 const TextoEsqueceuSuaSenha = styled.span`
-  color: white;
+  color: #ffffffc5;
   margin-top: 10px;
   font-size: 18px;
   width: 112%;
   text-align: end;
 
   a {
-    color: white;
+    color: #ffffffc5;
   }
 
   a:hover {
     color: gray;
   }
+`
+
+const Botao = styled.button`
+  width: 112%;
+  background: ${props => props.desativaBotao ? 'linear-gradient(to top, #8080806e, gray)' : 'linear-gradient(to top, #0062E2, #006FFF)'};
+  padding: 15px;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  border-radius: 10px;
+  margin-top: 20px;
+  border-style: none;
+  color: white;
+  cursor: ${props => props.carregando || props.desativaBotao ?  'not-allowed': 'pointer'};
+  transition: filter 0.3s;
+
+  &:hover{
+    filter: brightness(0.9);
+  }
+`
+
+const LogoAnimada = styled.img`
+    height: 80px;
 `
