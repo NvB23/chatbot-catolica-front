@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/alfa-slab-one": "^5.2.8",
     "@rive-app/react-canvas": "^4.23.4",
     "axios": "^1.12.2",
     "react": "^19.1.1",
