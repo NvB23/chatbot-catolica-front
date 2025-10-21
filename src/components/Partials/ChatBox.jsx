@@ -23,24 +23,30 @@ export default function ChatBox() {
   const  enviarMensagem = async () => {
     if (mensagem.trim() === "") return;
 
-      setConversa([...conversa, { autor: "Usuario", texto: mensagem }]);
-      const respostaChatBot = await enviarMensagemParaBackend(mensagem)
-      setConversa([
-        {
-          autor: "Bot",
-          texto: respostaChatBot,
-        },
-      ]);
+      setConversa(conversa => [...conversa, { autor: "Usuario", texto: mensagem }]);
+
+       setConversa(prev => [...prev, { autor: "Bot", texto: "Digitando..." }]);
+
       setMensagem("");
+      
+      const respostaChatBot = await enviarMensagemParaBackend(mensagem)
+      setConversa(prev => {
+      const copia = [...prev];
+      const ultimoIndex = copia.length - 1;
+      copia[ultimoIndex] = {
+        autor: "Bot",
+        texto: respostaChatBot != null ? respostaChatBot : "Desculpe! Erro ao obter resposta.",
+      };
+      return copia;
+    });
+      
   };
 
-  const enviarMensagemComEnter = (event) => {
+  const enviarMensagemComEnter = async (event) => {
+    if (event.key !== "Enter") return;
     if (mensagem.trim() === "") return;
-
-    if (event.key == "Enter") {
-      setConversa([...conversa, { autor: "Usuario", texto: mensagem }]);
-      setMensagem("");
-    }
+  
+    await enviarMensagem()
   };
 
   return (
@@ -93,6 +99,25 @@ const Mensagens = styled.div`
   flex-direction: column;
   gap: 16px;
   word-wrap: break-word;
+
+  &::-webkit-scrollbar {
+    width: 14px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.18);
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.32);
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.18) transparent;
  
 `;
 

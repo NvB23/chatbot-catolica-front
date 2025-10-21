@@ -5,7 +5,7 @@ export async function enviarMensagemParaBackend(mensagem) {
         axios.defaults.withCredentials = true;
         const resposta = await axios.post("http://localhost:5000/chat/envia-mensagem", {mensagem: mensagem});
 
-        return resposta['resposta'];
+        return resposta.data?.resposta ?? resposta.data;;
     } catch (erro) {
         console.log(erro);
     }
