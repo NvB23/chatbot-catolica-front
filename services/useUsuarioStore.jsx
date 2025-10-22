@@ -43,4 +43,6 @@ export const useUsuarioStore = create((set) => ({
     },
 
     setCarregando: (status) => set({ carregando: status }),
+
+
 }))

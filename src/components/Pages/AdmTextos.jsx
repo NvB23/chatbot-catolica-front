@@ -8,6 +8,7 @@ import BotaoSair from "../../../public/assets/images/BotaoSair.png";
 import lixeira from "../../../public/assets/images/lixeira.png";
 import "@fontsource/alfa-slab-one";
 import { Navigate } from "react-router-dom";
+import { useTextosStore } from "../../../services/useTextosStore";
 
 
 
@@ -16,15 +17,7 @@ export default function App() {
 
   const logout = useUsuarioStore(set => set.logout);
 
-  const documentos = [
-    { titulo: "Edital Matrícula 2025.1 Edital Vestibular GJDJFJ", data: "25/03/25 - 13:35" },
-    { titulo: "Edital Matrícula 2025.2", data: "30/08/25 - 15:00" },
-    { titulo: "Aviso de Palestra", data: "28/08/25 - 19:00" },
-    { titulo: "Seleção de Alunos", data: "25/08/25 - 15:45" },
-    { titulo: "Edital Vestibular 2025.2", data: "05/07/25 - 14:00" },
-    { titulo: "Edital Vestibular 2025.1", data: "15/03/25 - 18:44" },
-    
-  ];
+  const { textos } = useTextosStore();
 
   async function fazerLogout(event) {
     event.preventDefault();
@@ -132,14 +125,14 @@ export default function App() {
         </Colunas>
 
 
-      {documentos.map((doc, index) => (
-        <Item key={index}>
+      {/* {textos.foreach((doc) => (
+        <Item>
           <CampoTitulo>{doc.titulo}</CampoTitulo>
           <CampoAutor>{doc.titulo}</CampoAutor>
           <CampoDataHora>{doc.data}</CampoDataHora>
           <Lixeira src={lixeira} alt="lixeira" />
         </Item>
-              ))}
+              ))} */}
       </Lista>
     </PainelDocumentos>
       </Main>    

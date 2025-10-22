@@ -6,14 +6,20 @@ import AdmTextos from "./components/Pages/AdmTextos";
 import { ControladorRotaPublica } from "../services/ControladorRotaPublica";
 import { ControladorRotaPrivada } from "../services/ControladorRotaPrivada";
 import { useUsuarioStore } from "../services/useUsuarioStore";
+import { useTextosStore } from "../services/useTextosStore";
 
 
 export function Root() {
 
-  const usuarioLogado = useUsuarioStore((s) => s.usuarioLogado)
+  const usuarioLogado = useUsuarioStore((s) => s.usuarioLogado);
+  const exibirTodosOsTextos = useTextosStore((s) => s.exibirTodosOsTextos);
+  const { usuario } = useUsuarioStore();
 
   useEffect(() => {
     usuarioLogado();
+    if(usuario !== null ){
+      exibirTodosOsTextos();
+    }
   })
 
   return <React.StrictMode>
