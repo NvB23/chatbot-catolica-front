@@ -1,53 +1,71 @@
-import { useUsuarioStore } from "../../../services/useUsuarioStore";
 import styled from "styled-components";
+import { useUsuarioStore } from "../../../services/useUsuarioStore";
 import adicionarUsuario from "../../../public/assets/images/adicionarUsuario.png";
+import botaoAdicionar from "../../../public/assets/images/botaoAdicionar.png";
 import faficchatbot from "../../../public/assets/images/faficchatbot.png";
 import adicionarDocumento from "../../../public/assets/images/adicionarDocumento.png";
 import BotaoSair from "../../../public/assets/images/BotaoSair.png";
 import lixeira from "../../../public/assets/images/lixeira.png";
-import "@fontsource/alfa-slab-one"; 
-import { data } from "react-router-dom";
+import "@fontsource/alfa-slab-one";
+import { Navigate } from "react-router-dom";
 
 
 
 export default function App() {
+  const { usuario } = useUsuarioStore();
+
+  const logout = useUsuarioStore(set => set.logout);
+
   const documentos = [
-    { titulo: "Titulo do Documento", data: "Data e Hora"},
-    { titulo: "Edital Matrícula 2025.1", data: "25/03/25 - 13:35" },
+    { titulo: "Edital Matrícula 2025.1 Edital Vestibular GJDJFJ", data: "25/03/25 - 13:35" },
     { titulo: "Edital Matrícula 2025.2", data: "30/08/25 - 15:00" },
     { titulo: "Aviso de Palestra", data: "28/08/25 - 19:00" },
     { titulo: "Seleção de Alunos", data: "25/08/25 - 15:45" },
     { titulo: "Edital Vestibular 2025.2", data: "05/07/25 - 14:00" },
     { titulo: "Edital Vestibular 2025.1", data: "15/03/25 - 18:44" },
+    
   ];
+
+  async function fazerLogout(event) {
+    event.preventDefault();
+    logout();
+    <Navigate to="/login" replace />
+  }
 
     return (
         <Container>
           <Header>
-                <LogoArea>
-                    <Logo src={faficchatbot} alt = "Logo"/>
-                </LogoArea>
-          <Adicionar> 
-          <Titulo>ADICIONAR</Titulo>
+            <LogoArea>
+                <Logo src={faficchatbot} alt = "Logo"/>
+            </LogoArea>
+            {
+                usuario.TIPO === "ADMIN" ?
+              <Adicionar> 
+                <Titulo>ADICIONAR</Titulo>
 
-          <Botao>
-            <img src={adicionarUsuario} alt="Adicionar usuário" />
-            <span>Administrar <br /> usuario</span>
-          </Botao>
+                <Botao>
+                  <img src={adicionarUsuario} alt="Adicionar usuário" />
+                  <span>Administrar <br /> usuario</span>
+                </Botao>
 
-          <Botao>
-            <img src={adicionarDocumento} alt="Adicionar documento" />
-            <span>Adicionar <br /> Documentos</span>
-          </Botao>
-        </Adicionar>
+                <Botao>
+                  <img src={adicionarDocumento} alt="Adicionar documento" />
+                  <span>Adicionar <br /> Documentos</span>
+                </Botao>
+              </Adicionar>
+              
+              :
 
-          <InfoUsuario>
-            <span>Nome do Usuario (ADMIM)</span>
-          </InfoUsuario>
+              <BotaoAdicionarNovoTexto src={botaoAdicionar} alt="Adicionar documento" />
+            }
 
-          <Sair>
-            <Icone src={BotaoSair} alt = "Botão Sair"/>
-          </Sair>
+            <InfoUsuario>
+              <span><NomeUsuario>{usuario.NOME} </NomeUsuario>({usuario.TIPO === "ADMIN" ? "ADMIN" : "COMÚM"})</span>
+            </InfoUsuario>
+
+            <Sair onClick={fazerLogout}>
+              <Icone src={BotaoSair} alt = "Botão Sair"/>
+            </Sair>
         
           </Header>
 
@@ -106,14 +124,20 @@ export default function App() {
         <TituloPainel>DOCUMENTOS CADASTRADOS</TituloPainel>
 
       <Lista>
+        <Colunas>
+          <ColNome>Nome Documento</ColNome>
+          <ColAutor>Autor</ColAutor>
+          <ColDataHora>Data-Hora Upload</ColDataHora>
+          <ColDeletar>Deletar</ColDeletar>
+        </Colunas>
+
+
       {documentos.map((doc, index) => (
         <Item key={index}>
-          <span>{doc.titulo}</span>
-
-          <ItemRight>
-            <span>{doc.data}</span>
-            {index !== 0 && <Lixeira src={lixeira} alt="lixeira" />} {}
-          </ItemRight>
+          <CampoTitulo>{doc.titulo}</CampoTitulo>
+          <CampoAutor>{doc.titulo}</CampoAutor>
+          <CampoDataHora>{doc.data}</CampoDataHora>
+          <Lixeira src={lixeira} alt="lixeira" />
         </Item>
               ))}
       </Lista>
@@ -125,7 +149,7 @@ export default function App() {
 }
 
 const Icone = styled.img`
-    height: 45px;
+    height: 30px;
 `;
 
 
@@ -138,7 +162,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  width: 90%;
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -210,6 +234,15 @@ const Botao = styled.button`
   }
 `;
 
+const BotaoAdicionarNovoTexto = styled.img`
+  cursor: pointer;
+  animation: transform;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`
+
 const InfoUsuario = styled.div`
   display: flex;
   align-items: baseline;
@@ -217,15 +250,20 @@ const InfoUsuario = styled.div`
   margin-left: 10px;
   color: #002367;
   font-family: 'Alfa Slab One', sans-serif;
+  font-weight: 100;
 
 `;
+
+const NomeUsuario = styled.span`
+  font-size: 22px;
+`
 
 const Sair = styled.button`
   background-color: #c92a2a;
   color: white;
   padding: 6px 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   margin-left: 15px;
   cursor: pointer;
   font-weight: 500;
@@ -279,7 +317,8 @@ const PainelDocumentos = styled.div`
   border-radius: 10px;
   border: 2px solid #0b3b91; 
   overflow: hidden;
-  width: 500px;
+  width: 600px;
+  height: auto;
 `;
 
 const TituloPainel = styled.div`
@@ -296,51 +335,139 @@ const Lista = styled.div`
   flex-direction: column;
   border: 1px solid #0b3b91;
   border-top: none;
+  overflow-y: auto;
+  height: 450px;
+
+  &::-webkit-scrollbar {
+    width: 14px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 8px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.18);
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.32);
+  }
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.18) transparent;
+`;
+
+const Colunas = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: #9eb3df;
+  color: white;
+  height: 35px;
+  border-top: 1px solid #0b3b91;
 `;
 
 const Item = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
   background-color: #f9f9f9;
   border-top: 1px solid #0b3b91;
-  padding: 10px 14px;
+  cursor: pointer;
   transition: background 0.2s;
 
-  &:first-child {
-    background-color: #e6ecf9; 
-    font-weight: 600;
-  }
-
   &:hover {
-    background-color: #eaf0ff;
-  }
-
-  span {
-    font-size: 14px;
-    color: #0b3b91;
+    background-color: #bbc0cf;
   }
 `;
 
-const ItemRight = styled.div`
+
+const ColNome = styled.span`
+  width: 40%;
+  height: 100%;
   display: flex;
   align-items: center;
-  gap: 10px;
-
-  span {
-    font-size: 13px;
-    color: #0b3b91;
-  }
-  
+  justify-content: center;
+  text-align: center;
+  border-right: 1px solid #0b3b91;
+  box-sizing: border-box;
 `;
+
+const ColAutor = styled.span`
+  width: 25%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-right: 1px solid #0b3b91;
+  box-sizing: border-box;
+`;
+
+const ColDataHora = styled.span`
+  width: 25%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-right: 1px solid #0b3b91;
+  box-sizing: border-box;
+`;
+
+const ColDeletar = styled.span`
+  width: 10%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+`;
+
+const CampoTitulo = styled.span`
+  width: 40%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-right: 1px solid #0b3b91;
+  box-sizing: border-box;
+`;
+
+const CampoAutor = styled.span`
+  width: 25%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-right: 1px solid #0b3b91;
+  box-sizing: border-box;
+`;
+
+const CampoDataHora = styled.span`
+  width: 25%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-right: 1px solid #0b3b91;
+  box-sizing: border-box;
+`;
+
 const Lixeira = styled.img`
- width: 24px; 
- height: 24px; 
- cursor: pointer; 
- opacity: 0.8; transition: 
- opacity 0.2s; 
- 
- &:hover { 
-  opacity: 1;
- }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15px;
+  height: 24px; 
+  cursor: pointer; 
+  opacity: 0.8; transition: 
+  opacity 0.2s; 
+  
+  &:hover { 
+    opacity: 1;
+  }
 `;
